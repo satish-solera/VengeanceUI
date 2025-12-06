@@ -212,10 +212,64 @@ div[data-nextra-sidebar="true"] {
   border: none !important;
 }
 
-/* 4. Formatting for links */
+/* 4. Formatting and Animation for links */
+/* 4. Formatting and Animation for links */
 .nextra-sidebar-container a,
 .nextra-sidebar-container button {
-  padding-left: 0.25rem !important;
+  padding-left: 0.75rem !important;
+  /* More breathing room */
+  padding-right: 0.75rem !important;
+  margin-left: 0 !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  /* Premium Smooth Easing */
+  border-radius: 6px;
+  position: relative;
+  opacity: 0.6;
+  backface-visibility: hidden;
+  /* Smoother rendering */
+}
+
+/* TASTEFUL HOVER EFFECT */
+.nextra-sidebar-container a:hover,
+.nextra-sidebar-container button:hover {
+  opacity: 1;
+  background-color: rgba(128, 128, 128, 0.05);
+  /* Even subtler background */
+  transform: translateX(4px) scale(1.015);
+  /* Slide + Micro-Pop */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  /* Faint Lift */
+  color: var(--foreground) !important;
+}
+
+.dark .nextra-sidebar-container a:hover,
+.dark .nextra-sidebar-container button:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  /* Dark mode lift */
+}
+
+/* Active/Selected State - Tasteful & Visible */
+.nextra-sidebar-container li.active>a,
+.nextra-sidebar-container a.active,
+.nextra-sidebar-container a[aria-current="page"] {
+  color: var(--foreground) !important;
+  background-color: rgba(128, 128, 128, 0.1) !important;
+  /* Clearly visible tint */
+  font-weight: 500 !important;
+  transform: translateX(4px);
+  border-left: 2px solid var(--foreground) !important;
+  /* Tasteful marker */
+  border-radius: 4px;
+  /* Slightly squarer for marker */
+}
+
+.dark .nextra-sidebar-container li.active>a,
+.dark .nextra-sidebar-container a.active,
+.dark .nextra-sidebar-container a[aria-current="page"] {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  /* Defines the area */
 }
 
 /* 5. Hide tree expanders */
