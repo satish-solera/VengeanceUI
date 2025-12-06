@@ -1,6 +1,7 @@
 
 import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
+import { CommandMenu } from './src/components/command-menu'
 import { ModeToggle } from './src/components/mode-toggle'
 
 const config: DocsThemeConfig = {
@@ -17,7 +18,12 @@ const config: DocsThemeConfig = {
         toggleButton: false,
     },
     navbar: {
-        extraContent: <ModeToggle />
+        extraContent: (
+            <div className="flex items-center gap-2">
+                <CommandMenu />
+                <ModeToggle />
+            </div>
+        )
     },
     themeSwitch: {
         component: null

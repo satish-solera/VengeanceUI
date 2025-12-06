@@ -84,7 +84,7 @@ export function ComponentPreview({
                 <motion.div
                     layout
                     transition={{ duration: 0.2 }}
-                    className="relative rounded-xl border border-neutral-200 dark:border-neutral-800 bg-background overflow-hidden shadow-sm"
+                    className="relative rounded-xl !border-[1px] !border-neutral-200 dark:!border-neutral-700 bg-background dark:!bg-[#0c0c0c] overflow-hidden shadow-sm"
                 >
                     <TabsContent value="preview" className="m-0 min-h-[350px] flex items-center justify-center bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] dark:bg-[radial-gradient(#262626_1px,transparent_1px)]">
                         {/* Optional: Add a subtle overlay so the grid isn't too harsh */}
