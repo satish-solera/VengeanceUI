@@ -21,7 +21,8 @@ interface AnimatedSidebarProps {
 }
 
 export function AnimatedSidebar({ items, className }: AnimatedSidebarProps) {
-    const pathname = usePathname();
+    const pathnameRaw = usePathname();
+    const pathname = pathnameRaw ?? "";
     const [hoveredItem, setHoveredItem] = React.useState<string | null>(null);
 
     return (

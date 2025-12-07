@@ -1,0 +1,18 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "animated-button",
+    "type": "registry:ui",
+    "description": "A button with a shiny border and text reveal effect, perfect for calls to action.",
+    "dependencies": [
+        "framer-motion"
+    ],
+    "registryDependencies": [],
+    "files": [
+        {
+            "path": "components/ui/animated-button.tsx",
+            "content": "'use client'\n\nimport React from 'react'\nimport { motion, type MotionProps } from 'framer-motion'\nimport { cn } from '@/lib/utils'\n\ntype AnimatedButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & MotionProps & {\n    children?: React.ReactNode\n}\n\nconst AnimatedButton: React.FC<AnimatedButtonProps & { as?: any }> = ({\n    children = 'Browse Components',\n    className = '',\n    as = 'button',\n    whileTap = { scale: 0.97 },\n    transition = {\n        stiffness: 20,\n        damping: 15,\n        mass: 2,\n        scale: {\n            type: 'spring',\n            stiffness: 10,\n            damping: 5,\n            mass: 0.1,\n        },\n    },\n    ...rest\n}) => {\n    const Component = (motion as any)[as] || motion.button\n\n    return (\n        <Component\n            {...rest}\n            whileTap={whileTap}\n            transition={transition}\n            className={cn(\n                'px-6 py-2 rounded-md relative overflow-hidden bg-neutral-50 dark:bg-black border border-neutral-300 dark:border-neutral-800',\n                'text-neutral-900 dark:text-neutral-100 [--shine:rgba(0,0,0,.66)] dark:[--shine:rgba(255,255,255,.66)]',\n                className\n            )}\n        >\n            <motion.span\n                className=\"tracking-wide font-light h-full w-full flex items-center justify-center relative z-10\"\n                style={{\n                    WebkitMaskImage:\n                        'linear-gradient(-75deg, white calc(var(--mask-x) + 20%), transparent calc(var(--mask-x) + 30%), white calc(var(--mask-x) + 100%))',\n                    maskImage:\n                        'linear-gradient(-75deg, white calc(var(--mask-x) + 20%), transparent calc(var(--mask-x) + 30%), white calc(var(--mask-x) + 100%))',\n                }}\n                initial={{ ['--mask-x']: '100%' } as any}\n                animate={{ ['--mask-x']: '-100%' } as any}\n                transition={{ repeat: Infinity, duration: 1, ease: 'linear', repeatDelay: 1 }}\n            >\n                {children}\n            </motion.span>\n\n            <motion.span\n                className=\"block absolute inset-0 rounded-md p-px\"\n                style={{\n                    background: 'linear-gradient(-75deg, transparent 30%, var(--shine) 50%, transparent 70%)',\n                    backgroundSize: '200% 100%',\n                    mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',\n                    maskComposite: 'exclude',\n                    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',\n                    WebkitMaskComposite: 'xor',\n                }}\n                initial={{ backgroundPosition: '100% 0', opacity: 0 }}\n                animate={{ backgroundPosition: ['100% 0', '0% 0'], opacity: [0, 1, 0] }}\n                transition={{ duration: 1, repeat: Infinity, ease: 'linear', repeatDelay: 1 }}\n            />\n        </Component>\n    )\n}\n\nexport default AnimatedButton\n",
+            "type": "registry:ui",
+            "target": "components/ui/animated-button.tsx"
+        }
+    ]
+}
