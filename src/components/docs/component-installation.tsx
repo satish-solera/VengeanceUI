@@ -241,16 +241,7 @@ export function ComponentInstallation({ cli, manual, className }: ComponentInsta
                         onClick={() => setSourceManual(false)}
                     >
                         {!sourceManual && (
-                            <motion.div
-                                layoutId="install-tab-underline"
-                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
-                                initial={false}
-                                transition={{
-                                    type: "spring",
-                                    stiffness: 500,
-                                    damping: 30,
-                                }}
-                            />
+                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
                         )}
                         <span>CLI</span>
                     </button>
@@ -264,16 +255,7 @@ export function ComponentInstallation({ cli, manual, className }: ComponentInsta
                         onClick={() => setSourceManual(true)}
                     >
                         {sourceManual && (
-                            <motion.div
-                                layoutId="install-tab-underline"
-                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
-                                initial={false}
-                                transition={{
-                                    type: "spring",
-                                    stiffness: 500,
-                                    damping: 30,
-                                }}
-                            />
+                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
                         )}
                         <span>Manual</span>
                     </button>

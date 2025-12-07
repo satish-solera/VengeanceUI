@@ -40,7 +40,6 @@ export function ComponentPreview({
     return (
         <div className={cn("group relative my-8 flex flex-col space-y-4", className)}>
             <div className="flex flex-col space-y-1.5">
-                {title && <h3 className="font-heading text-xl font-bold tracking-tight">{title}</h3>}
                 {description && <p className="text-muted-foreground text-sm leading-relaxed max-w-2xl">{description}</p>}
             </div>
 
@@ -62,16 +61,7 @@ export function ComponentPreview({
                                     )}
                                 >
                                     {isActive && (
-                                        <motion.div
-                                            layoutId="active-tab-bg"
-                                            className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 rounded-lg"
-                                            initial={false}
-                                            transition={{
-                                                type: "spring",
-                                                stiffness: 500,
-                                                damping: 30
-                                            }}
-                                        />
+                                        <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 rounded-lg" />
                                     )}
                                     <span className="relative z-10 flex items-center gap-2">
                                         {tab === 'preview' ? (
@@ -88,8 +78,6 @@ export function ComponentPreview({
                 </div>
 
                 <motion.div
-                    layout
-                    transition={{ duration: 0.2 }}
                     className="relative rounded-xl !border-[1px] !border-neutral-200 dark:!border-neutral-700 bg-background dark:!bg-[#0c0c0c] overflow-hidden shadow-sm"
                 >
                     <TabsContent value="preview" className="m-0 min-h-[350px] flex items-center justify-center bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] dark:bg-[radial-gradient(#262626_1px,transparent_1px)]">
