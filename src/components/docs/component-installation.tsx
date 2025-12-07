@@ -117,21 +117,21 @@ export function CodeBlock({ code, language = "bash", className, expandable = fal
     return (
         <div className={cn(
             "relative group/code overflow-hidden",
-            // Forced Dark Mode styling: Always use dark borders and background
+            // Forced Dark Mode styling: Pitch Black
             nested
                 ? "border-0 bg-transparent p-0 m-0 shadow-none !rounded-none"
-                : "rounded-xl !border-[1px] !border-neutral-700 bg-[#161616] shadow-sm mb-4",
+                : "rounded-xl !border-[1px] !border-neutral-900 bg-black shadow-sm mb-4",
             className
         )}>
             {hideCopy ? null : title ? (
-                <div className="flex items-center justify-between px-3 py-2 border-b border-neutral-800 bg-black rounded-t-lg">
+                <div className="flex items-center justify-between px-3 py-2 border-b border-neutral-900 bg-black rounded-t-lg">
                     <div className="flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-500 fill-emerald-500 rotate-180"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" /></svg>
-                        <span className="text-sm text-neutral-200 font-medium">{title}</span>
+                        <span className="text-sm text-neutral-400 font-medium">{title}</span>
                     </div>
                     <button
                         onClick={() => copy(code)}
-                        className="flex items-center justify-center w-7 h-7 rounded-sm hover:bg-neutral-800 text-neutral-400 hover:text-neutral-200 transition-all"
+                        className="flex items-center justify-center w-7 h-7 rounded-sm hover:bg-neutral-900 text-neutral-500 hover:text-neutral-300 transition-all"
                         aria-label="Copy code"
                     >
                         {hasCopied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
