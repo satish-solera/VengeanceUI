@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
@@ -30,6 +32,7 @@ export function ComponentPreview({
     const [activeTab, setActiveTab] = useState("preview");
     const [hasCopied, setHasCopied] = useState(false);
     const { resolvedTheme } = useTheme();
+    const uniqueId = React.useId();
 
     const onCopy = () => {
         navigator.clipboard.writeText(code);
@@ -101,8 +104,8 @@ export function ComponentPreview({
                                 >
                                     {isActive && (
                                         <motion.div
-                                            layoutId="active-tab-preview"
-                                            className="absolute bottom-[-10px] left-0 right-0 h-[2px] bg-neutral-900 dark:bg-white"
+                                            layoutId={`active-tab-${uniqueId}`}
+                                            className="absolute bottom-[-11px] left-0 right-0 h-[2px] bg-neutral-900 dark:bg-white"
                                             transition={{ type: "spring", stiffness: 300, damping: 30 }}
                                         />
                                     )}

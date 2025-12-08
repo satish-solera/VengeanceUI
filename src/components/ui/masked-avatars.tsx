@@ -44,17 +44,20 @@ export function MaskedAvatars({
 }: MaskedAvatarsProps) {
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
-    // Auto-responsive size (scales with viewport but keeps props)
-    const dynamicSize = `clamp(${size - 20}px, ${size}px, ${size + 30}px)`
-    const circle = (border * 2 + size) / 2
-    const radX = circle - column - border
-    const maskImage = `radial-gradient(${circle}px ${circle}px at ${radX}px 50%, transparent ${circle - 0.5}px, white ${circle}px)`
+    // Optimize derived values with useMemo
+    const { dynamicSize, maskImage } = React.useMemo(() => {
+        const dynamicSize = `clamp(${size - 20}px, ${size}px, ${size + 30}px)`
+        const circle = (border * 2 + size) / 2
+        const radX = circle - column - border
+        const maskImage = `radial-gradient(${circle}px ${circle}px at ${radX}px 50%, transparent ${circle - 0.5}px, white ${circle}px)`
+        return { dynamicSize, maskImage }
+    }, [size, border, column])
 
-    const transitionConfig = {
+    const transitionConfig = React.useMemo(() => ({
         type: "spring" as const,
         stiffness: 260,
         damping: 20,
-    }
+    }), [])
 
     return (
         <div
@@ -92,7 +95,7 @@ export function MaskedAvatars({
                         return (
                             <motion.li
                                 key={index}
-                                className="relative grid content-end outline-none pointer-events-none"
+                                className="relative grid content-end outline-none pointer-events-none will-change-transform"
                                 role="listitem"
                                 style={{
                                     width: dynamicSize,
@@ -128,7 +131,7 @@ export function MaskedAvatars({
                                         {person.name.split("").map((char, i) => (
                                             <span
                                                 key={i}
-                                                className="absolute"
+                                                className="absolute will-change-transform"
                                                 style={{
                                                     offsetPath: "border-box",
                                                     offsetDistance: `${(offset + i) * 0.75}ch`,
@@ -154,7 +157,7 @@ export function MaskedAvatars({
                                 <div className="avatar-holder absolute inset-0 grid content-end">
                                     <motion.span
                                         className={cn(
-                                            "avatar inline-block w-full aspect-square rounded-full relative overflow-hidden pointer-events-auto border-[3px] border-background",
+                                            "avatar inline-block w-full aspect-square rounded-full relative overflow-hidden pointer-events-auto border-[3px] border-background will-change-transform",
                                             "focus:ring-2 focus:ring-offset-2 focus:ring-foreground"
                                         )}
                                         role="img"

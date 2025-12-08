@@ -16,7 +16,8 @@ export default {
     "animated-button": "Animated Button",
     "creepy-button": "Creepy Button",
     "masked-avatars": "Masked Avatars",
-    "glass-dock": "Dock"
+    "glass-dock": "Dock",
+    "social-flip-button": "Social Flip Button"
 }
 
 
