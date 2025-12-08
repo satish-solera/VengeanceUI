@@ -61,13 +61,10 @@ export const GlassDock = React.forwardRef<HTMLDivElement, GlassDockProps>(
                 <div
                     className={cn(
                         "relative flex gap-4 items-center px-6 py-4 rounded-2xl",
-                        "bg-white/80 dark:bg-black/80",
+                        "glass-border bg-white/80 dark:bg-black/80",
                         "backdrop-blur-xl shadow-2xl",
                         dockClassName
                     )}
-                    style={{
-                        border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.15)'}`,
-                    }}
                     onMouseLeave={() => {
                         setHoveredIndex(null);
                         setDirection(0);

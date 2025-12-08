@@ -123,16 +123,9 @@ export function SpotlightNavbar({
             <nav
                 ref={navRef}
                 className={cn(
-                    "spotlight-nav relative h-11 rounded-full transition-all duration-300"
+                    "spotlight-nav spotlight-nav-bg glass-border spotlight-nav-shadow",
+                    "relative h-11 rounded-full transition-all duration-300 overflow-hidden"
                 )}
-                style={{
-                    backgroundColor: isDark ? 'rgb(10, 10, 10)' : 'rgb(250, 250, 250)',
-                    border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.15)'}`,
-                    overflow: 'hidden',
-                    boxShadow: isDark 
-                        ? '0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.5)'
-                        : '0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
-                }}
             >
                 {/* Content */}
                 <ul className="relative flex items-center h-full px-2 gap-0 z-[10]">

@@ -110,6 +110,14 @@ export function CodeBlock({ code, language = "bash", className, expandable = fal
     const { resolvedTheme } = useTheme()
     const { hasCopied, copy } = useCopy()
     const [isExpanded, setIsExpanded] = React.useState(false)
+    const [isMounted, setIsMounted] = React.useState(false)
+
+    React.useEffect(() => {
+        setIsMounted(true)
+    }, [])
+
+    // Use light theme by default on server/initial render to prevent hydration mismatch
+    const currentTheme = isMounted ? (resolvedTheme === 'dark' ? vibrantDarkTheme : vibrantLightTheme) : vibrantLightTheme
 
     // Manual highlighting for bash if Prism fails being vibrant enough
     // This simple hack ensures 'npm install' gets colored if it's plain text
@@ -155,7 +163,7 @@ export function CodeBlock({ code, language = "bash", className, expandable = fal
                 expandable && !isExpanded && "max-h-32 overflow-hidden",
             )}>
                 <Highlight
-                    theme={resolvedTheme === 'dark' ? vibrantDarkTheme : vibrantLightTheme} // Adaptable Theme
+                    theme={currentTheme}
                     code={code}
                     language={language}
                 >
@@ -212,9 +220,6 @@ interface DependenciesProps {
 }
 
 export const Dependencies = ({ step, title, children, copyText, id }: DependenciesProps) => {
-    // Skip rendering step 4 entirely per request
-    if (step === 4) return null
-
     const { hasCopied, copy } = useCopy()
     const textToCopy = copyText ?? (typeof children === "string" ? children : "")
 

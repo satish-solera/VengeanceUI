@@ -51,7 +51,22 @@ export function cn(...inputs: ClassValue[]) {
     />
 </Dependencies>
 
-<Dependencies step={3} title="Copy the source code">
+<Dependencies step={3} title="Add styles to global CSS">
+    <p className="text-[13px] text-muted-foreground mt-2 mb-8">Add the following styles to your <code className="text-foreground font-mono text-xs bg-neutral-100 dark:bg-[#161616] border border-neutral-200 dark:border-neutral-800 px-2 py-1 rounded-md mx-1">app/globals.css</code> file</p>
+    <CodeBlock 
+        language="css"
+        code={`/* Glass Component Borders */
+.glass-border {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.dark .glass-border {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}`}
+    />
+</Dependencies>
+
+<Dependencies step={4} title="Copy the source code">
     <p className="text-[13px] text-muted-foreground mt-2 mb-8">Copy the code below and paste it into <code className="text-foreground font-mono text-xs bg-neutral-100 dark:bg-[#161616] border border-neutral-200 dark:border-neutral-800 px-2 py-1 rounded-md mx-1">components/ui/social-flip-button.tsx</code></p>
     <CodeBlock
         language="tsx"
@@ -197,11 +212,22 @@ export default function SocialFlipButton({
 }: SocialFlipButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [tooltipIndex, setTooltipIndex] = useState<number | null>(null);
+  const [isDark, setIsDark] = useState(false);
+
+  React.useEffect(() => {
+    const checkTheme = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className={cn("flex items-center justify-center gap-4 p-4", className)}>
       <div
-        className="group relative flex items-center justify-center gap-2 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-black"
+        className="group relative flex items-center justify-center gap-2 rounded-2xl glass-border bg-white p-4 shadow-sm dark:bg-black"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => {
           setIsHovered(false);
@@ -245,13 +271,28 @@ export default function SocialFlipButton({
             frontClassName={frontClassName}
             backClassName={backClassName}
           />
-        ))}
+        })};
       </div>
     </div>
   );
 }`}
     />
 </Dependencies>
+
+## Usage
+
+<CodeBlock 
+    language="tsx" 
+    code={`import SocialFlipButton from "@/components/ui/social-flip-button"
+
+export function SocialFlipButtonDemo() {
+  return (
+    <div className="flex items-center justify-center h-[300px] w-full">
+      <SocialFlipButton />
+    </div>
+  );
+}`} 
+/>
 
 ## Props
 

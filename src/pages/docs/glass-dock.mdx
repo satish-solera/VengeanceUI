@@ -74,13 +74,28 @@ export function cn(...inputs: ClassValue[]) {
     />
 </Dependencies>
 
-<Dependencies step={3} title="Copy the source code">
+<Dependencies step={3} title="Add styles to global CSS">
+    <p className="text-[13px] text-muted-foreground mt-2 mb-8">Add the following styles to your <code className="text-foreground font-mono text-xs bg-neutral-100 dark:bg-[#161616] border border-neutral-200 dark:border-neutral-800 px-2 py-1 rounded-md mx-1">app/globals.css</code> file</p>
+    <CodeBlock 
+        language="css"
+        code={`/* Glass Component Borders */
+.glass-border {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.dark .glass-border {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}`}
+    />
+</Dependencies>
+
+<Dependencies step={4} title="Copy the source code">
     <p className="text-[13px] text-muted-foreground mt-2 mb-8">Copy the code below and paste it into <code className="text-foreground font-mono text-xs bg-neutral-100 dark:bg-[#161616] border border-neutral-200 dark:border-neutral-800 px-2 py-1 rounded-md mx-1">components/ui/glass-dock.tsx</code></p>
     <CodeBlock
         language="tsx"
         title="components/ui/glass-dock.tsx"
         expandable={true}
-        code={`"use client";
+        code={`'use client';
 
 import React, { useState } from 'react';
 import { LucideIcon } from 'lucide-react';
@@ -88,58 +103,70 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 export interface DockItem {
-  title: string;
-  icon: LucideIcon;
-  onClick?: () => void;
-  href?: string;
+    title: string;
+    icon: LucideIcon;
+    onClick?: () => void;
+    href?: string;
 }
 
 export interface GlassDockProps extends React.HTMLAttributes<HTMLDivElement> {
-  items: DockItem[];
-  dockClassName?: string;
+    
+    items: DockItem[];
+    
+    dockClassName?: string;
 }
 
 export const GlassDock = React.forwardRef<HTMLDivElement, GlassDockProps>(
-  (
-    {
-      items,
-      className,
-      dockClassName,
-      ...props
-    },
-    ref
-  ) => {
-    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-    const [direction, setDirection] = useState(0);
+    (
+        {
+            items,
+            className,
+            dockClassName,
+            ...props
+        },
+        ref
+    ) => {
+        const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+        const [direction, setDirection] = useState(0);
+        const [isDark, setIsDark] = useState(false);
 
-    const handleMouseEnter = (index: number) => {
-      if (hoveredIndex !== null && index !== hoveredIndex) {
-        setDirection(index > hoveredIndex ? 1 : -1);
-      }
-      setHoveredIndex(index);
-    };
+        React.useEffect(() => {
+            const checkTheme = () => {
+                setIsDark(document.documentElement.classList.contains('dark'));
+            };
+            checkTheme();
+            const observer = new MutationObserver(checkTheme);
+            observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+            return () => observer.disconnect();
+        }, []);
 
-    const getTooltipPosition = (index: number) => index * 52 + 12;
+        const handleMouseEnter = (index: number) => {
+            if (hoveredIndex !== null && index !== hoveredIndex) {
+                setDirection(index > hoveredIndex ? 1 : -1);
+            }
+            setHoveredIndex(index);
+        };
 
-    return (
-      <div
-        ref={ref}
-        className={cn('w-max', className)}
-        {...props}
-      >
-        <div
-          className={cn(
-            'relative flex gap-4 items-center px-6 py-4 rounded-2xl',
-            'bg-white dark:bg-black',
-            'border border-neutral-200 dark:border-neutral-700',
-            'shadow-lg shadow-black/10 dark:shadow-white/10',
-            dockClassName
-          )}
-          onMouseLeave={() => {
-            setHoveredIndex(null);
-            setDirection(0);
-          }}
-        >
+        const getTooltipPosition = (index: number) => index * 52 + 12;
+
+        return (
+            <div
+                ref={ref}
+                className={cn('w-max', className)}
+                {...props}
+            >
+                <div
+                    className={cn(
+                        "relative flex gap-4 items-center px-6 py-4 rounded-2xl",
+                        "glass-border bg-white/80 dark:bg-black/80",
+                        "backdrop-blur-xl shadow-2xl",
+                        dockClassName
+                    )}
+                    onMouseLeave={() => {
+                        setHoveredIndex(null);
+                        setDirection(0);
+                    }}
+                >
           <AnimatePresence>
             {hoveredIndex !== null && (
               <motion.div
@@ -257,6 +284,40 @@ GlassDock.displayName = 'GlassDock';
 export default GlassDock;`}
     />
 </Dependencies>
+
+## Usage
+
+<CodeBlock 
+    language="tsx" 
+    code={`import { GlassDock } from "@/components/ui/glass-dock"
+import {
+  Home,
+  Terminal,
+  Layout,
+  Archive,
+  History,
+  Twitter,
+  Github,
+} from "lucide-react"
+
+export function GlassDockDemo() {
+  const items = [
+    { title: 'Home', icon: Home, href: '#' },
+    { title: 'Products', icon: Terminal, href: '#' },
+    { title: 'Components', icon: Layout, href: '#' },
+    { title: 'Archive', icon: Archive, href: '#' },
+    { title: 'Changelog', icon: History, href: '#' },
+    { title: 'Twitter', icon: Twitter, href: '#' },
+    { title: 'Github', icon: Github, href: '#' },
+  ];
+
+  return (
+    <div className="flex items-center justify-center h-[300px] w-full">
+      <GlassDock items={items} />
+    </div>
+  );
+}`} 
+/>
 
 ## Props
 

@@ -124,10 +124,8 @@ export function SpotlightNavbar({
       <nav
         ref={navRef}
         className={cn(
-          "relative h-11 rounded-full overflow-hidden transition-all duration-300",
-          "border border-neutral-200 dark:border-white/[0.1]",
-          "bg-white/80 dark:bg-black/80",
-          "backdrop-blur-md"
+          "spotlight-nav spotlight-nav-bg glass-border spotlight-nav-shadow",
+          "relative h-11 rounded-full transition-all duration-300 overflow-hidden"
         )}
       >
         {/* Content */}
@@ -242,7 +240,38 @@ export function cn(...inputs: ClassValue[]) {
     />
 </Dependencies>
 
-<Dependencies step={3} title="Copy the source code">
+<Dependencies step={3} title="Add styles to global CSS">
+    <p className="text-[13px] text-muted-foreground mt-2 mb-8">Add the following styles to your <code className="text-foreground font-mono text-xs bg-neutral-100 dark:bg-[#161616] border border-neutral-200 dark:border-neutral-800 px-2 py-1 rounded-md mx-1">app/globals.css</code> file</p>
+    <CodeBlock 
+        language="css"
+        code={`/* Glass Component Borders */
+.glass-border {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.dark .glass-border {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.spotlight-nav-bg {
+  background-color: rgb(250, 250, 250);
+}
+
+.dark .spotlight-nav-bg {
+  background-color: rgb(10, 10, 10);
+}
+
+.spotlight-nav-shadow {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+.dark .spotlight-nav-shadow {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.5);
+}`}
+    />
+</Dependencies>
+
+<Dependencies step={4} title="Copy the source code">
     <p className="text-[13px] text-muted-foreground mt-2 mb-8">Copy the code below and paste it into <code className="text-foreground font-mono text-xs bg-neutral-100 dark:bg-[#161616] border border-neutral-200 dark:border-neutral-800 px-2 py-1 rounded-md mx-1">components/ui/spotlight-navbar.tsx</code></p>
     <CodeBlock
         language="tsx"
@@ -362,10 +391,8 @@ export function SpotlightNavbar({
       <nav
         ref={navRef}
         className={cn(
-          "relative h-11 rounded-full overflow-hidden transition-all duration-300",
-          "border border-neutral-200 dark:border-neutral-700",
-          "bg-white/80 dark:bg-black/80",
-          "backdrop-blur-md"
+          "spotlight-nav spotlight-nav-bg glass-border spotlight-nav-shadow",
+          "relative h-11 rounded-full transition-all duration-300 overflow-hidden"
         )}
       >
         {/* Content */}
