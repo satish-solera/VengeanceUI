@@ -18,7 +18,8 @@ export default {
     "masked-avatars": "Masked Avatars",
     "glass-dock": "Dock",
     "social-flip-button": "Social Flip Button",
-    "interactive-book": "Interactive Book"
+    "interactive-book": "Interactive Book",
+    "spotlight-navbar": "Spotlight Navbar"
 }
 
 

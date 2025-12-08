@@ -1,9 +1,9 @@
 'use client'
 
 import React from 'react'
-import { motion, type MotionProps } from 'framer-motion'
+import { motion } from 'framer-motion'
 
-type AnimatedButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & MotionProps & {
+type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     children?: React.ReactNode
 }
 
@@ -12,52 +12,40 @@ type AnimatedButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & Motio
  * - theme-aware: uses Tailwind `dark:` classes so it works in both light and dark mode
  * - accepts all native button props (onClick, className, type, etc.)
  */
-const AnimatedButton: React.FC<AnimatedButtonProps & { as?: any }> = ({
-    children = 'Browse Components',
-    className = '',
-    as = 'button',
-    whileTap = { scale: 0.97 },
-    transition = {
-        stiffness: 20,
-        damping: 15,
-        mass: 2,
-        scale: {
-            type: 'spring',
-            stiffness: 10,
-            damping: 5,
-            mass: 0.1,
-        },
-    },
-    ...rest
-}) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const Component = (motion as any)[as] || motion.button
-
+const AnimatedButton: React.FC<Props> = ({ children = 'Browse Components', className = '', ...rest }) => {
     return (
-        <Component
-            {...rest}
-            whileTap={whileTap}
-            transition={transition}
+        <motion.button
+            {...(rest as any)}
+            whileTap={{ scale: 0.97 }}
+            transition={{
+                stiffness: 20,
+                damping: 15,
+                mass: 2,
+                scale: {
+                    type: 'spring',
+                    stiffness: 10,
+                    damping: 5,
+                    mass: 0.1,
+                },
+            }}
             // Set a CSS variable `--shine` that we override for dark mode via Tailwind.
             // Tailwind JIT allows arbitrary properties like `dark:[--shine:...]` if enabled.
             className={
-                `px-6 py-2 rounded-md relative overflow-hidden bg-neutral-50 dark:bg-black border border-neutral-300 dark:border-neutral-800 ` +
-                `text-neutral-900 dark:text-neutral-100 ${className} [--shine:rgba(0,0,0,.66)] dark:[--shine:rgba(255,255,255,.66)]`
+                `group inline-flex items-center justify-center px-6 py-6 rounded-md relative overflow-hidden bg-neutral-50 dark:bg-black border border-neutral-200 dark:border-neutral-800 ` +
+                `text-neutral-900 dark:text-neutral-100 font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:pointer-events-none disabled:opacity-50 ${className} [--shine:rgba(0,0,0,.66)] dark:[--shine:rgba(255,255,255,.66)]`
             }
         >
             {/* Text with shine mask */}
             <motion.span
-                className="tracking-wide font-light h-full w-full flex items-center justify-center relative z-10"
+                className="tracking-wide font-light flex items-center justify-center h-full w-full relative z-10"
                 style={{
                     WebkitMaskImage:
                         'linear-gradient(-75deg, white calc(var(--mask-x) + 20%), transparent calc(var(--mask-x) + 30%), white calc(var(--mask-x) + 100%))',
                     maskImage:
                         'linear-gradient(-75deg, white calc(var(--mask-x) + 20%), transparent calc(var(--mask-x) + 30%), white calc(var(--mask-x) + 100%))',
                 }}
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                initial={{ ['--mask-x']: '100%' } as any}
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                animate={{ ['--mask-x']: '-100%' } as any}
+                initial={{ ['--mask-x' as any]: '100%' } as any}
+                animate={{ ['--mask-x' as any]: '-100%' } as any}
                 transition={{ repeat: Infinity, duration: 1, ease: 'linear', repeatDelay: 1 }}
             >
                 {children}
@@ -78,7 +66,7 @@ const AnimatedButton: React.FC<AnimatedButtonProps & { as?: any }> = ({
                 animate={{ backgroundPosition: ['100% 0', '0% 0'], opacity: [0, 1, 0] }}
                 transition={{ duration: 1, repeat: Infinity, ease: 'linear', repeatDelay: 1 }}
             />
-        </Component>
+        </motion.button>
     )
 }
 

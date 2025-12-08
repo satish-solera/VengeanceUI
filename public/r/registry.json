@@ -511,6 +511,16 @@
     ]
   },
   {
+    "name": "spotlight-navbar",
+    "dependencies": [
+      "framer-motion"
+    ],
+    "type": "registry:ui",
+    "files": [
+      "public/r/spotlight-navbar.json"
+    ]
+  },
+  {
     "name": "switch",
     "dependencies": [
       "@radix-ui/react-switch"
