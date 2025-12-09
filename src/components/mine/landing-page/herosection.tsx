@@ -30,9 +30,9 @@ export const HeroSection = () => {
         </motion.div>
 
         <h1 className="text-5xl lg:text-6xl font-semibold leading-tight tracking-tight text-foreground">
-          Build beautiful interfaces
+          Build beautiful <br /> interfaces
           <FlipText
-            className="block mt-2 ml-2 text-muted-foreground font-normal text-4xl lg:text-5xl"
+            className="block mt-2 text-muted-foreground font-normal text-4xl lg:text-5xl"
             delay={0.5}
           >
             with precision and speed
