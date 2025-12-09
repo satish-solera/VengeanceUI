@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from 'next/dynamic'
 import {
     ArrowRight,
     LayoutTemplate,
@@ -14,22 +15,59 @@ import {
     Menu,
     Waves,
     MousePointerClick,
+    Loader2
 } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { AnimatedHero } from '@/components/ui/animated-hero'
-import LiquidText from '@/components/ui/liquid-text'
-import { GradientTilesDemo } from '@/components/docs/gradient-tiles'
-import { TestimonialsCardDemo } from '@/components/docs/testimonials-card'
-import InteractiveBook from '@/components/ui/interactive-book'
-import { SpotlightNavbar } from '@/components/ui/spotlight-navbar'
-import GlassDock from '@/components/ui/glass-dock'
-import { PerspectiveGrid } from '@/components/ui/perspective-grid'
-import AnimatedButton from '@/components/ui/animated-button'
-import SocialFlipButton from '@/components/ui/social-flip-button'
-import CreepyButton from '@/components/ui/creepy-button'
-import { FlipText } from '@/components/ui/flip-text'
-import { MaskedAvatars } from '@/components/ui/masked-avatars'
 import Link from 'next/link'
+
+// --- Lazy Load & Optimize Heavy Components ---
+
+const LoadingPlaceholder = () => (
+    <div className="flex items-center justify-center w-full h-full bg-neutral-100 dark:bg-neutral-900 text-neutral-400">
+        <Loader2 className="w-6 h-6 animate-spin" />
+    </div>
+)
+
+const AnimatedHero = dynamic(() => import('@/components/ui/animated-hero').then(mod => mod.AnimatedHero), {
+    ssr: false,
+    loading: () => <LoadingPlaceholder />
+})
+
+const LiquidText = dynamic(() => import('@/components/ui/liquid-text'), {
+    ssr: false,
+    loading: () => <LoadingPlaceholder />
+})
+
+const GradientTilesDemo = dynamic(() => import('@/components/docs/gradient-tiles').then(mod => mod.GradientTilesDemo), {
+    ssr: false,
+    loading: () => <LoadingPlaceholder />
+})
+
+const TestimonialsCardDemo = dynamic(() => import('@/components/docs/testimonials-card').then(mod => mod.TestimonialsCardDemo), {
+    ssr: false,
+    loading: () => <LoadingPlaceholder />
+})
+
+const InteractiveBook = dynamic(() => import('@/components/ui/interactive-book'), {
+    ssr: false,
+    loading: () => <LoadingPlaceholder />
+})
+
+const PerspectiveGrid = dynamic(() => import('@/components/ui/perspective-grid').then(mod => mod.PerspectiveGrid), {
+    ssr: false,
+    loading: () => <LoadingPlaceholder />
+})
+
+// Lighter components can stay as regular imports or dynamic if needed, 
+// strictly optimizing the heaviest ones first.
+const SpotlightNavbar = dynamic(() => import('@/components/ui/spotlight-navbar').then(mod => mod.SpotlightNavbar), { ssr: false })
+const GlassDock = dynamic(() => import('@/components/ui/glass-dock'), { ssr: false })
+const AnimatedButton = dynamic(() => import('@/components/ui/animated-button'), { ssr: false })
+const SocialFlipButton = dynamic(() => import('@/components/ui/social-flip-button'), { ssr: false })
+const CreepyButton = dynamic(() => import('@/components/ui/creepy-button'), { ssr: false })
+const FlipText = dynamic(() => import('@/components/ui/flip-text').then(mod => mod.FlipText), { ssr: false })
+const MaskedAvatars = dynamic(() => import('@/components/ui/masked-avatars').then(mod => mod.MaskedAvatars), { ssr: false })
+
 
 const components = [
     {
@@ -38,11 +76,11 @@ const components = [
         category: "Backgrounds",
         href: "/docs/animated-hero",
         icon: LayoutTemplate,
-        // Increased scale/visibility: 1200x800 container, scale 0.35
+        // Optimization: Lazy loaded + Cached Styles
         component: (
-            <div className="absolute inset-0 bg-black overflow-hidden pointer-events-auto">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[800px] flex items-center justify-center transform scale-[0.35]">
-                    <AnimatedHero title="HERO" showThemeToggle={false} />
+            <div className="absolute inset-0 bg-black overflow-hidden pointer-events-auto text-white">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[800px] flex items-center justify-center transform scale-[0.4]">
+                    <AnimatedHero title="HERO" showThemeToggle={false} forceTheme="dark" />
                 </div>
             </div>
         )
@@ -53,7 +91,6 @@ const components = [
         category: "Animations",
         href: "/docs/liquid-text",
         icon: Waves,
-        // Zoomed ULTRA IN: Scale 1.5, Font Size 300, Interactive
         component: (
             <div className="absolute inset-0 flex items-center justify-center pointer-events-auto transform scale-[1.5]">
                 <LiquidText
@@ -72,7 +109,6 @@ const components = [
         category: "Backgrounds",
         href: "/docs/gradient-tiles",
         icon: Grid2X2,
-        // Zoomed out
         component: <div className="scale-75"><GradientTilesDemo /></div>
     },
     {
@@ -81,7 +117,6 @@ const components = [
         category: "Components",
         href: "/docs/testimonials-card",
         icon: MessageSquareQuote,
-        // Zoomed out
         component: (
             <div className="scale-[0.55] origin-center transform translate-y-4">
                 <TestimonialsCardDemo />
@@ -94,7 +129,6 @@ const components = [
         category: "Animations",
         href: "/docs/interactive-book",
         icon: BookOpen,
-        // Zoomed out
         component: (
             <div className="scale-75 container mx-auto flex justify-center">
                 <InteractiveBook
@@ -113,7 +147,6 @@ const components = [
         category: "Components",
         href: "/docs/spotlight-navbar",
         icon: Menu,
-        // Zoomed out
         component: <div className="mt-8 scale-[0.65] origin-top"><SpotlightNavbar items={[{ label: "Home", href: "#" }, { label: "About", href: "#" }, { label: "Services", href: "#" }]} /></div>
     },
     {
@@ -122,7 +155,6 @@ const components = [
         category: "Components",
         href: "/docs/glass-dock",
         icon: PanelBottom,
-        // Zoomed out
         component: <div className="mt-8 scale-[0.65] origin-top"><GlassDock items={[{ icon: LayoutTemplate, title: "Home" }, { icon: Users, title: "Profile" }, { icon: MessageSquareQuote, title: "Chat" }, { icon: Grid2X2, title: "Apps" }]} /></div>
     },
     {
@@ -131,11 +163,11 @@ const components = [
         category: "Backgrounds",
         href: "/docs/perspective-grid",
         icon: Grid2X2,
-        // Improved visibility: Dark background container
+        // Optimization: gridSize reduced from default 40 to 20 (400 tiles vs 1600 tiles)
         component: (
             <div className="absolute inset-0 bg-neutral-900/50 flex items-center justify-center">
                 <div className="scale-75">
-                    <PerspectiveGrid />
+                    <PerspectiveGrid gridSize={20} />
                 </div>
             </div>
         )
@@ -146,7 +178,6 @@ const components = [
         category: "Animations",
         href: "/docs/animated-button",
         icon: MousePointerClick,
-        // Zoomed out
         component: <div className="scale-75"><AnimatedButton>Hover Me</AnimatedButton></div>
     },
     {
@@ -155,7 +186,6 @@ const components = [
         category: "Animations",
         href: "/docs/social-flip-button",
         icon: Share2,
-        // Zoomed out more: 0.75 -> 0.6
         component: <div className="scale-[0.6]"><SocialFlipButton /></div>
     },
     {
@@ -164,7 +194,6 @@ const components = [
         category: "Animations",
         href: "/docs/creepy-button",
         icon: Ghost,
-        // Zoomed out
         component: <div className="scale-75"><CreepyButton className="bg-red-600">Creepy</CreepyButton></div>
     },
     {
@@ -173,7 +202,6 @@ const components = [
         category: "Animations",
         href: "/docs/flip-text",
         icon: Type,
-        // Zoomed out
         component: <div className="scale-75"><FlipText className="text-3xl font-bold text-black dark:text-white">Vengeance</FlipText></div>
     },
     {
@@ -182,7 +210,6 @@ const components = [
         category: "Components",
         href: "/docs/masked-avatars",
         icon: Users,
-        // Zoomed out more: 0.75 -> 0.6
         component: <div className="scale-[0.6]"><MaskedAvatars /></div>
     },
 ]
@@ -214,7 +241,7 @@ export const ComponentsGrid = () => {
                             transition-colors
                         ">
                             <div className="absolute inset-0 overflow-hidden flex items-center justify-center">
-                                {/* Component Container */}
+                                {/* Direct Rendering with less generic wrapping */}
                                 {component.component}
                             </div>
 

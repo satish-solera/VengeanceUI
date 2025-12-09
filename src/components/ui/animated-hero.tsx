@@ -12,12 +12,15 @@ interface AnimatedHeroProps {
     showThemeToggle?: boolean;
     /** Additional CSS classes */
     className?: string;
+    /** Force specific theme rendering */
+    forceTheme?: "dark" | "light";
 }
 
 export function AnimatedHero({
     title = "AN AWESOME TITLE",
     showThemeToggle = true,
     className = "",
+    forceTheme,
 }: AnimatedHeroProps) {
     const [isDark, setIsDark] = useState(false);
     const [mounted, setMounted] = useState(false);
@@ -26,6 +29,7 @@ export function AnimatedHero({
         setMounted(true);
 
         const checkDarkMode = () => {
+            if (forceTheme) return forceTheme === "dark";
             return document.documentElement.classList.contains("dark");
         };
         setIsDark(checkDarkMode());
@@ -58,7 +62,7 @@ export function AnimatedHero({
         <section className={cn("relative w-full h-auto", className)}>
             {/* Animated Background */}
             <div
-                className="relative w-full min-h-screen flex items-center justify-center transition-all duration-500"
+                className="relative w-full h-full min-h-[500px] flex items-center justify-center transition-all duration-500"
                 style={{
                     backgroundImage: `
                         repeating-linear-gradient(
@@ -84,9 +88,9 @@ export function AnimatedHero({
                         ? "blur(10px) opacity(0.5) saturate(2)"
                         : "blur(10px) invert(1)",
                     maskImage:
-                        "radial-gradient(ellipse at 100% 0%, black 40%, transparent 70%)",
+                        "radial-gradient(circle at 50% 50%, black 60%, transparent 100%)",
                     WebkitMaskImage:
-                        "radial-gradient(ellipse at 100% 0%, black 40%, transparent 70%)",
+                        "radial-gradient(circle at 50% 50%, black 60%, transparent 100%)",
                 }}
             >
                 <div
