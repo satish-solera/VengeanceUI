@@ -71,6 +71,7 @@ const FlipText = dynamic(() => import('@/components/ui/flip-text').then(mod => m
 const MaskedAvatars = dynamic(() => import('@/components/ui/masked-avatars').then(mod => mod.MaskedAvatars), { ssr: false })
 const StaggeredGridDemo = dynamic(() => import('@/components/docs/staggered-grid').then(mod => mod.StaggeredGridDemo), { ssr: false, loading: () => <LoadingPlaceholder /> })
 const FlipFadeText = dynamic(() => import('@/components/ui/flip-fade-text').then(mod => mod.FlipFadeText), { ssr: false, loading: () => <LoadingPlaceholder /> })
+const LightLines = dynamic(() => import('@/components/ui/light-lines').then(mod => mod.LightLines), { ssr: false, loading: () => <LoadingPlaceholder /> })
 
 
 const components = [
@@ -241,6 +242,22 @@ const components = [
                 <div className="scale-[0.5] origin-center">
                     <FlipFadeText words={["LOADING", "COMPUTING", "BUILDING"]} interval={2000} />
                 </div>
+            </div>
+        )
+    },
+    {
+        title: "Light Lines",
+        description: "Flowing light trails animation",
+        category: "Backgrounds",
+        href: "/docs/light-lines",
+        icon: Waves,
+        component: (
+            <div className="absolute inset-0 overflow-hidden">
+                <LightLines speedMultiplier={1.5}>
+                    <div className="flex items-center justify-center h-full">
+                        <span className="text-white font-bold text-lg tracking-wider">LIGHT</span>
+                    </div>
+                </LightLines>
             </div>
         )
     },

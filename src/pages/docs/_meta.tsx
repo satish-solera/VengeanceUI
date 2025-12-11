@@ -28,5 +28,7 @@ export default {
     "spotlight-navbar": "Spotlight Navbar",
     "staggered-grid": "Staggered Grid",
     "expandable-bento-grid": "Expandable Bento Grid",
-    "flip-fade-text": "Flip Fade Text"
+    "flip-fade-text": "Flip Fade Text",
+    "notch-navbar": "Notch Navbar",
+    "light-lines": "Light Lines"
 }
