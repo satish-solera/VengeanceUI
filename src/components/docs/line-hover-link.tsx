@@ -23,8 +23,8 @@ const variants: { variant: LineHoverVariant; label: string }[] = [
 
 export function LineHoverLinkDemo() {
     return (
-        <div className="flex flex-col items-center justify-center gap-8 p-12 bg-neutral-100 dark:bg-black rounded-xl min-h-[350px] border border-neutral-200 dark:border-neutral-800 shadow-sm">
-            <div className="grid grid-cols-3 md:grid-cols-4 gap-x-24 gap-y-16">
+        <div className="flex flex-col items-center justify-center w-full h-full gap-8 p-12 bg-neutral-50 dark:bg-black rounded-xl min-h-[350px] border border-neutral-200 dark:border-neutral-800 shadow-sm">
+            <div className="grid grid-cols-3 md:grid-cols-4 gap-x-16 gap-y-12">
                 {variants.map(({ variant, label }) => (
                     <div key={variant} className="text-center">
                         <LineHoverLink

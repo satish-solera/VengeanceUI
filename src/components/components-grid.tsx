@@ -303,7 +303,7 @@ const components = [
         category: "Animations",
         href: "/docs/line-hover-link",
         icon: MousePointerClick,
-        component: <div className="scale-[0.65] origin-center w-[120%] -ml-[10%] h-full flex items-center justify-center"><LineHoverLinkDemo /></div>
+        component: <div className="scale-[0.65] origin-center w-[180%] h-[180%] shrink-0 flex items-center justify-center pr-6"><LineHoverLinkDemo /></div>
     },
     {
         title: "Logo Slider",
