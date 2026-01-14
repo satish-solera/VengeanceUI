@@ -94,8 +94,7 @@ export default function RootLayout({
       <body
         className={`${interTight.variable} ${pixelify.variable} ${playfair.variable} antialiased`}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <CommandMenu />
           {children}
           <Footer />

@@ -1,44 +1,42 @@
-'use client'
-import React, { useEffect, useRef, useState, memo, lazy, Suspense } from 'react'
+import React, { useEffect, useRef, useState, memo } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import imagesLoaded from 'imagesloaded'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
-
-// Import ACTUAL UI components from the library
-import AnimatedButton from '@/components/ui/animated-button'
-import { CreepyButton } from '@/components/ui/creepy-button'
-import { FlipText } from '@/components/ui/flip-text'
-import { GlassDock } from '@/components/ui/glass-dock'
-import { LiquidText } from '@/components/ui/liquid-text'
-import { PerspectiveGrid } from '@/components/ui/perspective-grid'
-import SocialFlipButton from '@/components/ui/social-flip-button'
-import { SpotlightNavbar } from '@/components/ui/spotlight-navbar'
-import { MaskedAvatars } from '@/components/ui/masked-avatars'
-import InteractiveBook from '@/components/ui/interactive-book'
-import TestimonialsCard from '@/components/ui/testimonials-card'
-import { GlowBorderCard } from '@/components/ui/glow-border-card'
-import LightLines from '@/components/ui/light-lines'
-import LiquidOcean from '@/components/ui/liquid-ocean'
+import dynamic from 'next/dynamic'
 import {
     Sparkles, Book, Grid3X3, Users,
-    Layers, Type, MousePointer2, Palette, Dock, PanelTop, Image,
-    Home, Settings, User, Mail, Search, MousePointerClick
+    Layers, Type, MousePointer2, Palette, Dock, PanelTop, Image as ImageIcon,
+    Home, Settings, User
 } from 'lucide-react'
+
+// Lightweight components (can stay standard import or be dynamic if very large)
+import AnimatedButton from '@/components/ui/animated-button'
+import { FlipText } from '@/components/ui/flip-text'
+import SocialFlipButton from '@/components/ui/social-flip-button'
+
+// Heavy UI components - Lazy Loaded
+// ssr: false ensures they don't break hydration and saves server load
+const CreepyButton = dynamic(() => import('@/components/ui/creepy-button').then(mod => mod.CreepyButton), { ssr: false })
+const GlassDock = dynamic(() => import('@/components/ui/glass-dock').then(mod => mod.GlassDock), { ssr: false })
+const LiquidText = dynamic(() => import('@/components/ui/liquid-text').then(mod => mod.LiquidText), { ssr: false })
+const PerspectiveGrid = dynamic(() => import('@/components/ui/perspective-grid').then(mod => mod.PerspectiveGrid), { ssr: false })
+const SpotlightNavbar = dynamic(() => import('@/components/ui/spotlight-navbar').then(mod => mod.SpotlightNavbar), { ssr: false })
+const MaskedAvatars = dynamic(() => import('@/components/ui/masked-avatars').then(mod => mod.MaskedAvatars), { ssr: false })
+const InteractiveBook = dynamic(() => import('@/components/ui/interactive-book'), { ssr: false })
+const TestimonialsCard = dynamic(() => import('@/components/ui/testimonials-card'), { ssr: false })
+const GlowBorderCard = dynamic(() => import('@/components/ui/glow-border-card').then(mod => mod.GlowBorderCard), { ssr: false })
+const LightLines = dynamic(() => import('@/components/ui/light-lines'), { ssr: false })
+const LiquidOcean = dynamic(() => import('@/components/ui/liquid-ocean'), { ssr: false })
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Memoized wrapper for heavy components to prevent re-renders
-const MemoizedPerspectiveGrid = memo(PerspectiveGrid)
-const MemoizedLightLines = memo(LightLines)
-const MemoizedLiquidOcean = memo(LiquidOcean)
-const MemoizedGlowBorderCard = memo(GlowBorderCard)
-const MemoizedGlassDock = memo(GlassDock)
-const MemoizedSpotlightNavbar = memo(SpotlightNavbar)
-const MemoizedMaskedAvatars = memo(MaskedAvatars)
-const MemoizedInteractiveBook = memo(InteractiveBook)
-const MemoizedTestimonialsCard = memo(TestimonialsCard)
+// Simple placeholder for loading states if needed
+const ComponentPlaceholder = () => <div className="w-full h-full bg-neutral-100 dark:bg-neutral-900 animate-pulse rounded-lg" />
+
+// Wrappers replaced by dynamic components directly
+
 
 interface ComponentPreview {
     id: string
@@ -48,7 +46,7 @@ interface ComponentPreview {
     docPath: string
 }
 
-// OPTIMIZED: Actual UI components with memoization + reduced complexity
+// OPTIMIZED: Actual UI components with dynamic loading + reduced complexity
 const documentedComponents: ComponentPreview[] = [
     {
         id: 'animated-button',
@@ -91,7 +89,7 @@ const documentedComponents: ComponentPreview[] = [
         icon: <Dock className="w-8 h-8" />,
         preview: (
             <div className="w-full h-full flex items-center justify-center scale-[0.5]">
-                <MemoizedGlassDock items={[
+                <GlassDock items={[
                     { title: 'Home', icon: Home },
                     { title: 'Settings', icon: Settings },
                     { title: 'User', icon: User },
@@ -105,7 +103,7 @@ const documentedComponents: ComponentPreview[] = [
         name: 'Glow Card',
         icon: <Palette className="w-8 h-8" />,
         preview: (
-            <MemoizedGlowBorderCard
+            <GlowBorderCard
                 width="100%"
                 height="100%"
                 colorPreset="aurora"
@@ -132,7 +130,7 @@ const documentedComponents: ComponentPreview[] = [
         icon: <Sparkles className="w-8 h-8" />,
         preview: (
             <div className="w-full h-full relative overflow-hidden rounded-lg">
-                <MemoizedLiquidOcean className="absolute inset-0" showBoats={false} showGrid={false} />
+                <LiquidOcean className="absolute inset-0" showBoats={false} showGrid={false} />
             </div>
         ),
         docPath: '/docs/liquid-ocean'
@@ -154,7 +152,7 @@ const documentedComponents: ComponentPreview[] = [
         icon: <Layers className="w-8 h-8" />,
         preview: (
             <div className="w-full h-full relative overflow-hidden">
-                <MemoizedPerspectiveGrid gridSize={8} showOverlay={true} fadeRadius={85} className="absolute inset-0" />
+                <PerspectiveGrid gridSize={8} showOverlay={true} fadeRadius={85} className="absolute inset-0" />
             </div>
         ),
         docPath: '/docs/perspective-grid'
@@ -162,10 +160,10 @@ const documentedComponents: ComponentPreview[] = [
     {
         id: 'masked-avatars',
         name: 'Masked Avatars',
-        icon: <Image className="w-8 h-8" />,
+        icon: <ImageIcon className="w-8 h-8" />,
         preview: (
             <div className="w-full h-full flex items-center justify-center scale-[0.6]">
-                <MemoizedMaskedAvatars />
+                <MaskedAvatars />
             </div>
         ),
         docPath: '/docs/masked-avatars'
@@ -176,7 +174,7 @@ const documentedComponents: ComponentPreview[] = [
         icon: <Book className="w-8 h-8" />,
         preview: (
             <div className="w-full h-full flex items-center justify-center scale-[0.3]">
-                <MemoizedInteractiveBook
+                <InteractiveBook
                     coverImage="/og-image.png"
                     bookTitle="UI Book"
                     bookAuthor="Vengeance"
@@ -195,7 +193,7 @@ const documentedComponents: ComponentPreview[] = [
         icon: <Users className="w-8 h-8" />,
         preview: (
             <div className="w-full h-full flex items-center justify-center scale-[0.35]">
-                <MemoizedTestimonialsCard
+                <TestimonialsCard
                     items={[
                         { id: 1, title: "Amazing!", description: "Best UI library ever", image: "/Avatar11.jpg" },
                         { id: 2, title: "Love it!", description: "So easy to use", image: "/Avatar6.jpg" },
@@ -214,7 +212,7 @@ const documentedComponents: ComponentPreview[] = [
         icon: <PanelTop className="w-8 h-8" />,
         preview: (
             <div className="w-full h-full flex items-center justify-center scale-[0.5]">
-                <MemoizedSpotlightNavbar />
+                <SpotlightNavbar />
             </div>
         ),
         docPath: '/docs/spotlight-navbar'
@@ -225,7 +223,7 @@ const documentedComponents: ComponentPreview[] = [
         icon: <Sparkles className="w-8 h-8" />,
         preview: (
             <div className="w-full h-full relative overflow-hidden rounded-lg">
-                <MemoizedLightLines className="absolute inset-0" speedMultiplier={0.5} />
+                <LightLines className="absolute inset-0" speedMultiplier={0.5} />
             </div>
         ),
         docPath: '/docs/light-lines'
@@ -244,14 +242,14 @@ const documentedComponents: ComponentPreview[] = [
     },
 ]
 
-// Featured components - ACTUAL components with memoization + reduced complexity
+// Featured components - ACTUAL components with dynamic loading + reduced complexity
 const featuredComponents = [
     {
         id: 'card-1',
         name: 'Light Lines',
         preview: (
             <div className="relative w-full h-full overflow-hidden rounded-xl">
-                <MemoizedLightLines className="absolute inset-0" speedMultiplier={0.5} />
+                <LightLines className="absolute inset-0" speedMultiplier={0.5} />
             </div>
         ),
     },
@@ -260,7 +258,7 @@ const featuredComponents = [
         name: 'Perspective Grid',
         preview: (
             <div className="relative w-full h-full overflow-hidden rounded-xl">
-                <MemoizedPerspectiveGrid gridSize={10} showOverlay={true} fadeRadius={90} className="absolute inset-0" />
+                <PerspectiveGrid gridSize={10} showOverlay={true} fadeRadius={90} className="absolute inset-0" />
             </div>
         ),
     },
@@ -269,7 +267,7 @@ const featuredComponents = [
         name: 'Liquid Ocean',
         preview: (
             <div className="relative w-full h-full overflow-hidden rounded-xl">
-                <MemoizedLiquidOcean className="absolute inset-0" showBoats={false} showGrid={false} />
+                <LiquidOcean className="absolute inset-0" showBoats={false} showGrid={false} />
             </div>
         ),
     },
@@ -323,9 +321,10 @@ export function LandingPageGrid({
                 }
             }).from(chars, {
                 ease: 'sine.out',
-                yPercent: 300,
+                yPercent: 150, // Reduced from 300 to 150 for snappier, less resource heavy feel
                 autoAlpha: 0,
-                stagger: { each: 0.05, from: 'center' }
+                stagger: { each: 0.05, from: 'center' },
+                force3D: true
             })
         }
 
@@ -347,24 +346,24 @@ export function LandingPageGrid({
             })
 
             columns.forEach((columnItems, columnIndex) => {
-                const delayFactor = Math.abs(columnIndex - middleColumnIndex) * 0.2
+                const delayFactor = Math.abs(columnIndex - middleColumnIndex) * 0.1 // Reduced delay factor for snappy feel
+
+                // Optimized Timeline with standard Transforms
                 gsap.timeline({
                     scrollTrigger: {
                         trigger: gridFullRef.current,
                         start: 'top bottom',
                         end: 'center center',
-                        scrub: 1.5,
+                        scrub: 1, // Faster scrub response
                         invalidateOnRefresh: true,
                     }
                 }).from(columnItems, {
-                    yPercent: 450,
+                    yPercent: 300, // Reduced from 450 to 300 for less heavy compositing work
                     autoAlpha: 0,
                     delay: delayFactor,
                     ease: 'sine.out',
-                }).from(columnItems.map(item => item.querySelector('.grid__item-img')), {
-                    transformOrigin: '50% 0%',
-                    ease: 'sine.out',
-                }, 0)
+                    force3D: true // Ensure GPU layer usage
+                })
             })
 
             // Bento animation
@@ -382,12 +381,12 @@ export function LandingPageGrid({
                         invalidateOnRefresh: true,
                     }
                 }).to(bentoContainer, {
-                    y: window.innerHeight * 0.1,
-                    scale: isMobile ? 1 : 1.5, // Don't scale on mobile to prevent overflow/cutting
+                    y: window.innerHeight * 0.05, // Reduced parallax movement
+                    // scale removed to prevent rasterization lag
                     zIndex: 100,
-                    ease: 'power2.out',
-                    duration: 1,
-                    force3D: true
+                    ease: 'none', // Linear ease for strictly linked scroll
+                    force3D: true,
+                    overwrite: 'auto'
                 }, 0)
             }
         }
