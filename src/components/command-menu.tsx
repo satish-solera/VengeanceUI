@@ -3,9 +3,49 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 import { Command as CommandPrimitive } from "cmdk"
-import { Search, Moon, Sun, Laptop, FileText, Home, ArrowRight } from "lucide-react"
+import { Search, Moon, Sun, Laptop, FileText, Home, ArrowRight, Box, Book, Settings } from "lucide-react"
 import { useTheme } from "next-themes"
-import { cn } from "@/lib/utils"
+
+// All VengeanceUI pages and components
+const NAVIGATION_ITEMS = {
+    general: [
+        { name: "Home", path: "/", icon: Home },
+        { name: "Components Overview", path: "/docs/components-overview", icon: Box },
+        { name: "Introduction", path: "/docs", icon: Book },
+    ],
+    installation: [
+        { name: "Install Next.js", path: "/docs/installation", icon: Settings },
+        { name: "Install Tailwind CSS", path: "/docs/install-tailwind", icon: Settings },
+        { name: "Add Utilities", path: "/docs/add-utilities", icon: Settings },
+        { name: "CLI", path: "/docs/cli", icon: Settings },
+    ],
+    components: [
+        { name: "Animated Button", path: "/docs/animated-button" },
+        { name: "Animated Hero", path: "/docs/animated-hero" },
+        { name: "Glow Border Card", path: "/docs/glow-border-card" },
+        { name: "3D Displacement Text", path: "/docs/liquid-text" },
+        { name: "Liquid Ocean", path: "/docs/liquid-ocean" },
+        { name: "Liquid Metal", path: "/docs/liquid-metal" },
+        { name: "Testimonials Card", path: "/docs/testimonials-card" },
+        { name: "Flip Text", path: "/docs/flip-text" },
+        { name: "Creepy Button", path: "/docs/creepy-button" },
+        { name: "Masked Avatars", path: "/docs/masked-avatars" },
+        { name: "Dock", path: "/docs/glass-dock" },
+        { name: "Pixelated Image Trail", path: "/docs/pixelated-image-trail" },
+        { name: "Perspective Grid", path: "/docs/perspective-grid" },
+        { name: "Social Flip Button", path: "/docs/social-flip-button" },
+        { name: "Interactive Book", path: "/docs/interactive-book" },
+        { name: "Spotlight Navbar", path: "/docs/spotlight-navbar" },
+        { name: "Staggered Grid", path: "/docs/staggered-grid" },
+        { name: "Expandable Bento Grid", path: "/docs/expandable-bento-grid" },
+        { name: "Flip Fade Text", path: "/docs/flip-fade-text" },
+        { name: "Folder Preview", path: "/docs/folder-preview" },
+        { name: "Light Lines", path: "/docs/light-lines" },
+        { name: "Line Hover Link", path: "/docs/line-hover-link" },
+        { name: "Logo Slider", path: "/docs/logo-slider" },
+        { name: "Stacked Logos", path: "/docs/stacked-logos" },
+    ],
+}
 
 export function CommandMenu() {
     const router = useRouter()
@@ -19,7 +59,7 @@ export function CommandMenu() {
                 setOpen((open) => !open)
             }
 
-            if(e.key === "Escape"){
+            if (e.key === "Escape") {
                 setOpen(false)
             }
         }
@@ -33,6 +73,23 @@ export function CommandMenu() {
         command()
     }, [])
 
+    if (!open) {
+        return (
+            <button
+                onClick={() => setOpen(true)}
+                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors rounded-md hover:bg-foreground/5"
+                aria-label="Open command menu"
+            >
+                <Search className="w-4 h-4" />
+                <span className="hidden sm:inline">Search documentation...</span>
+                <kbd className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 text-xs font-mono bg-foreground/10 rounded">
+                    <span>⌘</span>
+                    <span>K</span>
+                </kbd>
+            </button>
+        )
+    }
+
     return (
         <>
             <button
@@ -41,87 +98,133 @@ export function CommandMenu() {
                 aria-label="Open command menu"
             >
                 <Search className="w-4 h-4" />
-                <span className="hidden sm:inline">Search...</span>
+                <span className="hidden sm:inline">Search documentation...</span>
                 <kbd className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 text-xs font-mono bg-foreground/10 rounded">
                     <span>⌘</span>
                     <span>K</span>
                 </kbd>
             </button>
-            <CommandPrimitive.Dialog
-                open={open}
-                modal={false}
-                onOpenChange={setOpen}
-                label="Global Command Menu"
-                className="fixed inset-0 z-100 bg-black/50 backdrop-blur-sm transition-all duration-200 ease-in-out pointer-events-none"
-            >
-            <div className="fixed left-1/2 top-1/2 w-full max-w-[640px] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-neutral-200 bg-white p-2 shadow-2xl dark:border-neutral-800 dark:bg-neutral-900 pointer-events-auto">
-                <div className="flex items-center border-b border-neutral-100 px-3 pb-2 dark:border-neutral-800">
-                    <Search className="mr-2 h-5 w-5 shrink-0 opacity-50" />
-                    <CommandPrimitive.Input
-                        autoFocus
-                        placeholder="Type a command or search..."
-                        className="flex h-11 w-full rounded-md bg-transparent py-3 text-base outline-none placeholder:text-neutral-500 disabled:cursor-not-allowed disabled:opacity-50 dark:text-neutral-50"
-                    />
-                </div>
 
-                <CommandPrimitive.List className="max-h-[300px] overflow-y-auto overflow-x-hidden p-2">
-                    <CommandPrimitive.Empty className="py-6 text-center text-sm text-neutral-500">
-                        No results found.
-                    </CommandPrimitive.Empty>
+            {/* Backdrop */}
+            <div
+                className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+                onClick={() => setOpen(false)}
+            />
 
-                    <CommandPrimitive.Group heading="General" className="overflow-hidden px-2 py-1.5 text-xs font-medium text-neutral-500 dark:text-neutral-400">
-                        <CommandPrimitive.Item
-                            onSelect={() => runCommand(() => router.push("/docs/components-overview"))}
-                            className="relative flex cursor-default select-none items-center rounded-md px-2 py-2 text-sm outline-none aria-selected:bg-neutral-100 aria-selected:text-neutral-900 dark:aria-selected:bg-neutral-800 dark:aria-selected:text-neutral-50"
-                        >
-                            <FileText className="mr-2 h-4 w-4" />
-                            <span>Components</span>
-                        </CommandPrimitive.Item>
-                        <CommandPrimitive.Item
-                            onSelect={() => runCommand(() => router.push("/"))}
-                            className="relative flex cursor-default select-none items-center rounded-md px-2 py-2 text-sm outline-none aria-selected:bg-neutral-100 aria-selected:text-neutral-900 dark:aria-selected:bg-neutral-800 dark:aria-selected:text-neutral-50"
-                        >
-                            <Home className="mr-2 h-4 w-4" />
-                            <span>Home</span>
-                        </CommandPrimitive.Item>
-                    </CommandPrimitive.Group>
+            {/* Centered Dialog */}
+            <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+                <CommandPrimitive
+                    className="w-full max-w-[640px] mx-4 rounded-xl border border-neutral-200 bg-white shadow-2xl dark:border-neutral-800 dark:bg-neutral-950 pointer-events-auto overflow-hidden"
+                    label="Global Command Menu"
+                >
+                    <div className="flex items-center border-b border-neutral-200 px-4 dark:border-neutral-800">
+                        <Search className="mr-3 h-5 w-5 shrink-0 opacity-50" />
+                        <CommandPrimitive.Input
+                            autoFocus
+                            placeholder="Search components, pages, and settings..."
+                            className="flex h-14 w-full rounded-md bg-transparent py-3 text-base outline-none placeholder:text-neutral-500 disabled:cursor-not-allowed disabled:opacity-50 dark:text-neutral-50"
+                        />
+                        <kbd className="ml-2 px-2 py-1 text-xs font-mono bg-neutral-100 dark:bg-neutral-800 rounded">
+                            ESC
+                        </kbd>
+                    </div>
 
-                    <CommandPrimitive.Group heading="Components" className="overflow-hidden px-2 py-1.5 text-xs font-medium text-neutral-500 dark:text-neutral-400">
-                        <CommandPrimitive.Item
-                            onSelect={() => runCommand(() => router.push("/docs/animated-button"))}
-                            className="relative flex cursor-default select-none items-center rounded-md px-2 py-2 text-sm outline-none aria-selected:bg-neutral-100 aria-selected:text-neutral-900 dark:aria-selected:bg-neutral-800 dark:aria-selected:text-neutral-50"
-                        >
-                            <ArrowRight className="mr-2 h-4 w-4" />
-                            <span>Animated Button</span>
-                        </CommandPrimitive.Item>
-                    </CommandPrimitive.Group>
+                    <CommandPrimitive.List className="max-h-[400px] overflow-y-auto overflow-x-hidden p-2">
+                        <CommandPrimitive.Empty className="py-6 text-center text-sm text-neutral-500">
+                            No results found.
+                        </CommandPrimitive.Empty>
 
-                    <CommandPrimitive.Group heading="Theme" className="overflow-hidden px-2 py-1.5 text-xs font-medium text-neutral-500 dark:text-neutral-400">
-                        <CommandPrimitive.Item
-                            onSelect={() => runCommand(() => setTheme("light"))}
-                            className="relative flex cursor-default select-none items-center rounded-md px-2 py-2 text-sm outline-none aria-selected:bg-neutral-100 aria-selected:text-neutral-900 dark:aria-selected:bg-neutral-800 dark:aria-selected:text-neutral-50"
-                        >
-                            <Sun className="mr-2 h-4 w-4" />
-                            <span>Light</span>
-                        </CommandPrimitive.Item>
-                        <CommandPrimitive.Item
-                            onSelect={() => runCommand(() => setTheme("dark"))}
-                            className="relative flex cursor-default select-none items-center rounded-md px-2 py-2 text-sm outline-none aria-selected:bg-neutral-100 aria-selected:text-neutral-900 dark:aria-selected:bg-neutral-800 dark:aria-selected:text-neutral-50"
-                        >
-                            <Moon className="mr-2 h-4 w-4" />
-                            <span>Dark</span>
-                        </CommandPrimitive.Item>
-                        <CommandPrimitive.Item
-                            onSelect={() => runCommand(() => setTheme("system"))}
-                            className="relative flex cursor-default select-none items-center rounded-md px-2 py-2 text-sm outline-none aria-selected:bg-neutral-100 aria-selected:text-neutral-900 dark:aria-selected:bg-neutral-800 dark:aria-selected:text-neutral-50"
-                        >
-                            <Laptop className="mr-2 h-4 w-4" />
-                            <span>System</span>
-                        </CommandPrimitive.Item>
-                    </CommandPrimitive.Group>
-                </CommandPrimitive.List>
+                        {/* General Navigation */}
+                        <CommandPrimitive.Group heading="Navigation" className="overflow-hidden px-2 py-1.5 text-xs font-semibold text-neutral-500 uppercase tracking-wider dark:text-neutral-400">
+                            {NAVIGATION_ITEMS.general.map((item) => (
+                                <CommandPrimitive.Item
+                                    key={item.path}
+                                    value={item.name}
+                                    onSelect={() => runCommand(() => router.push(item.path))}
+                                    className="relative flex cursor-pointer select-none items-center rounded-lg px-3 py-2.5 text-sm outline-none aria-selected:bg-neutral-100 aria-selected:text-neutral-900 dark:aria-selected:bg-neutral-800 dark:aria-selected:text-neutral-50 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors"
+                                >
+                                    <item.icon className="mr-3 h-4 w-4 opacity-60" />
+                                    <span>{item.name}</span>
+                                </CommandPrimitive.Item>
+                            ))}
+                        </CommandPrimitive.Group>
+
+                        {/* Installation */}
+                        <CommandPrimitive.Group heading="Installation" className="overflow-hidden px-2 py-1.5 text-xs font-semibold text-neutral-500 uppercase tracking-wider dark:text-neutral-400">
+                            {NAVIGATION_ITEMS.installation.map((item) => (
+                                <CommandPrimitive.Item
+                                    key={item.path}
+                                    value={item.name}
+                                    onSelect={() => runCommand(() => router.push(item.path))}
+                                    className="relative flex cursor-pointer select-none items-center rounded-lg px-3 py-2.5 text-sm outline-none aria-selected:bg-neutral-100 aria-selected:text-neutral-900 dark:aria-selected:bg-neutral-800 dark:aria-selected:text-neutral-50 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors"
+                                >
+                                    <item.icon className="mr-3 h-4 w-4 opacity-60" />
+                                    <span>{item.name}</span>
+                                </CommandPrimitive.Item>
+                            ))}
+                        </CommandPrimitive.Group>
+
+                        {/* Components */}
+                        <CommandPrimitive.Group heading="Components" className="overflow-hidden px-2 py-1.5 text-xs font-semibold text-neutral-500 uppercase tracking-wider dark:text-neutral-400">
+                            {NAVIGATION_ITEMS.components.map((item) => (
+                                <CommandPrimitive.Item
+                                    key={item.path}
+                                    value={item.name}
+                                    onSelect={() => runCommand(() => router.push(item.path))}
+                                    className="relative flex cursor-pointer select-none items-center rounded-lg px-3 py-2.5 text-sm outline-none aria-selected:bg-neutral-100 aria-selected:text-neutral-900 dark:aria-selected:bg-neutral-800 dark:aria-selected:text-neutral-50 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors"
+                                >
+                                    <ArrowRight className="mr-3 h-4 w-4 opacity-60" />
+                                    <span>{item.name}</span>
+                                </CommandPrimitive.Item>
+                            ))}
+                        </CommandPrimitive.Group>
+
+                        {/* Theme */}
+                        <CommandPrimitive.Group heading="Theme" className="overflow-hidden px-2 py-1.5 text-xs font-semibold text-neutral-500 uppercase tracking-wider dark:text-neutral-400">
+                            <CommandPrimitive.Item
+                                value="Light Mode"
+                                onSelect={() => runCommand(() => setTheme("light"))}
+                                className="relative flex cursor-pointer select-none items-center rounded-lg px-3 py-2.5 text-sm outline-none aria-selected:bg-neutral-100 aria-selected:text-neutral-900 dark:aria-selected:bg-neutral-800 dark:aria-selected:text-neutral-50 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors"
+                            >
+                                <Sun className="mr-3 h-4 w-4 opacity-60" />
+                                <span>Light Mode</span>
+                            </CommandPrimitive.Item>
+                            <CommandPrimitive.Item
+                                value="Dark Mode"
+                                onSelect={() => runCommand(() => setTheme("dark"))}
+                                className="relative flex cursor-pointer select-none items-center rounded-lg px-3 py-2.5 text-sm outline-none aria-selected:bg-neutral-100 aria-selected:text-neutral-900 dark:aria-selected:bg-neutral-800 dark:aria-selected:text-neutral-50 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors"
+                            >
+                                <Moon className="mr-3 h-4 w-4 opacity-60" />
+                                <span>Dark Mode</span>
+                            </CommandPrimitive.Item>
+                            <CommandPrimitive.Item
+                                value="System Theme"
+                                onSelect={() => runCommand(() => setTheme("system"))}
+                                className="relative flex cursor-pointer select-none items-center rounded-lg px-3 py-2.5 text-sm outline-none aria-selected:bg-neutral-100 aria-selected:text-neutral-900 dark:aria-selected:bg-neutral-800 dark:aria-selected:text-neutral-50 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors"
+                            >
+                                <Laptop className="mr-3 h-4 w-4 opacity-60" />
+                                <span>System</span>
+                            </CommandPrimitive.Item>
+                        </CommandPrimitive.Group>
+                    </CommandPrimitive.List>
+
+                    {/* Footer */}
+                    <div className="flex items-center justify-between border-t border-neutral-200 dark:border-neutral-800 px-4 py-2 text-xs text-neutral-500">
+                        <div className="flex items-center gap-2">
+                            <kbd className="px-1.5 py-0.5 bg-neutral-100 dark:bg-neutral-800 rounded">↑↓</kbd>
+                            <span>Navigate</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <kbd className="px-1.5 py-0.5 bg-neutral-100 dark:bg-neutral-800 rounded">↵</kbd>
+                            <span>Select</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <kbd className="px-1.5 py-0.5 bg-neutral-100 dark:bg-neutral-800 rounded">ESC</kbd>
+                            <span>Close</span>
+                        </div>
+                    </div>
+                </CommandPrimitive>
             </div>
-        </CommandPrimitive.Dialog>
-      </>
+        </>
     )
 }

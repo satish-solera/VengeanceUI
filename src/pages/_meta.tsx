@@ -1,6 +1,3 @@
 export default {
-    docs: {
-        title: "Documentation",
-        type: "page"
-    }
+    docs: "Documentation"
 }
