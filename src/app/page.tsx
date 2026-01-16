@@ -21,10 +21,7 @@ const Sec1 = dynamic(
   { ssr: false }
 );
 
-const MoriphingSection = dynamic(
-  () => import("@/components/mine/landing-page/morphing-section").then(mod => mod.MoriphingSection),
-  { ssr: false }
-);
+
 
 // Skeleton loaders
 function GridSkeleton() {
@@ -62,9 +59,7 @@ const Page = () => {
           <Sec1 />
         </div>
 
-        <div className="min-h-screen relative left-[40%]">
-          <MoriphingSection />
-        </div>
+
       </div>
     </SmoothScroll>
   );
