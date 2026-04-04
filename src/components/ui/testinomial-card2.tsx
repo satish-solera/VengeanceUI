@@ -1,9 +1,9 @@
-
+"use client";
 import { cn } from "@/lib/utils";
-
 import Link from "next/link";
+import { useState } from "react";
 import { FaTwitter } from "react-icons/fa";
-
+import {useTheme} from "next-themes"
 
 interface TestimonialItem {
 
@@ -22,7 +22,7 @@ interface TestimonialItem {
 
 interface TestimonialsCardProps {
     /** Array of testimonial items to display */
-    items: TestimonialItem[];
+    items: TestimonialItem;
     /** Additional CSS classes for the container */
     className?: string;
 
@@ -31,40 +31,44 @@ interface TestimonialsCardProps {
 
 export function TestimonialsCard2({ items, className }: TestimonialsCardProps) {
 
+    const {theme} = useTheme();
+    const [pos , setPos] = useState({x : 0 , y: 0});
+    const [hoverEffect , setHoverEffect] = useState(false);
+    const color = theme === "dark" ? "rgba(255,255,255,0.1)" : "rgba( 0 , 0 , 0,0.1)" ;
+
+    const handleMouse = (e: React.MouseEvent<HTMLDivElement>) =>{
+    setHoverEffect(true);
+    const rect = e.currentTarget.getBoundingClientRect();
+    setPos({x : e.clientX - rect.left, y : e.clientY - rect.top })
+        }
     return (
         <div className={cn("flex flex-row gap-1", className)}>
-            {
-                items?.length > 0 && items.map((el, idx) => {
-
-                    return (
-
-                        <Link href='/' key={idx}>
-                            <div
-
-
-                                className={cn("flex flex-col items-center justify-center md:p-4 w-60 h-60 flex-1 relative overflow-hidden  bg-foreground text-background px-2 md:px-8 py-3.5 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-95 cursor-pointer", el.big == true && "h-80")}>
-                            <div className=" my-4 ">
-                                <div
-                                    className=" grid  grid-cols-[1fr_1fr_1fr]  gap-2 md:gap-4    ">
-
-                                    <div className="rounded-full relative overflow-hidden size-10"><img
-                                        src={el.image}
-                                        alt={`image + ${idx}`}
+         
+                        <Link href='/' >
+                            <div className={cn("flex flex-col items-center  md:p-2 w-80 h-36 border border-zinc-200 dark:border-zinc-800 rounded-lg relative overflow-hidden   cursor-pointer " )}
+                            onMouseMove={handleMouse}
+                            onMouseLeave={() =>setHoverEffect(false)}
+                            style={{
+                                background: hoverEffect ? `radial-gradient(circle at ${pos.x}px ${pos.y}px, ${color} , transparent 70%)`: "",
+                            }}
+                            >
+                            <div className="pt-2">
+                                    <div className="flex gap-2 justify-end">
+                                <span className=" border border-zinc-200 dark:border-zinc-800 py-1 px-3 rounded-lg text-[16px] text-foreground/70 hover:text-foreground">{items.title}</span>
+                                    <div className="rounded-full relative overflow-hidden size-8 ">
+                                    <img
+                                        src={items.image}
+                                        alt={`image + ${items.title}`}
                                         className="w-full h-full object-cover"
                                         draggable={false}
-                                    /></div>
-                                    <div className="">
-                                        <h1 className=" font-normal md:font-medium">{el.title}</h1>
-                                        <p className="text-xs">{el.company}</p>
+                                    />
                                     </div>
-                                    <div className=""><FaTwitter /></div>
                                 </div>
-                                <p className="py-2 md:py-4">{el.description}</p></div>
-                                </div>
+                                <p className="pt-4 text-balance">{items.description}</p>
+                            </div>
+                            </div>
                         </Link>
-                    )
-                })
-            }
+                 
         </div>
         
     )

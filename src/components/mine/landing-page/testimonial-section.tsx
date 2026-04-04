@@ -6,31 +6,30 @@ import { useEffect, useRef } from "react";
 
 const demoItems = [
     {
-
-        title: "Mountain Landscape",
-        company: 'abc',
+        title: "Satish S.",
+        company: 'solUI',
         description: "Beautiful mountain scenery with snow-capped peaks.",
         image: "/Avatar11.jpg",
     },
     {
 
-        title: "Abstract Art",
+        title: "Ashutosh ",
         description: "A stunning piece of modern abstract artwork.",
         image: "/Avatar6.jpg",
-        // big: true
+        big: true
     },
-    {
+    // {
 
-        title: "Nature Photography",
-        description: "Capturing the essence of natural beauty.",
-        image: "/186330c41b3d12d96bdaa03e0c0db30d.jpg",
-    },
-    {
+    //     title: "Nature Photography",
+    //     description: "Capturing the essence of natural beauty.",
+    //     image: "/186330c41b3d12d96bdaa03e0c0db30d.jpg",
+    // },
+    // {
 
-        title: "Digital Creation",
-        description: "Innovative digital art and design concepts.",
-        image: "/f318d62afa39731a0a371388d400a773.jpg",
-    },
+    //     title: "Digital Creation",
+    //     description: "Innovative digital art and design concepts.",
+    //     image: "/f318d62afa39731a0a371388d400a773.jpg",
+    // },
 ];
 
 export const TestimonialSection = () => {
@@ -76,38 +75,22 @@ export const TestimonialSection = () => {
     })
 
     return (
-        <div className="grid grid-rows-auto  max-h-screen  relative mb-10 md:mb-30 gap-5 space-y-20 md:gap-8 overflow-hidden touch-pan-y ">
+        <div className=" max-h-screen  mb-10 md:mb-30 md:gap-8 overflow-hidden touch-pan-y w-full">
+
+           
 
             <motion.div
-                style={{ x: x1 }}
-                className="flex flex-row  md:overflow-hidden rotate-45  ">
-                <TestimonialsCard2
-                    items={demoItems} />
-            </motion.div>
+                // style={{ x: x2 }}
 
-            <motion.div
-                style={{ x: x2 }}
+                className="flex gap-1  md:overflow-hidden justify-center">
+                {
+                    demoItems.length > 0 && demoItems.map((el, id) => {
+                        return (
 
-                className="flex flex-row  md:overflow-hidden rotate-45 ">
-                <TestimonialsCard2 items={demoItems} />
-            </motion.div>
-            <motion.div
-                style={{ x: x3 }}
-
-                className="flex flex-row  md:overflow-hidden rotate-45 ">
-                <TestimonialsCard2 items={demoItems} />
-            </motion.div>
-            <motion.div
-                style={{ x: x1 }}
-
-                className="flex flex-row  md:overflow-hidden rotate-45">
-                <TestimonialsCard2 items={demoItems} />
-            </motion.div>
-            <motion.div
-                style={{ x: x2 }}
-
-                className="flex flex-row  md:overflow-hidden rotate-45">
-                <TestimonialsCard2 items={demoItems} />
+                            <TestimonialsCard2 items={el} key={id} />
+                        )
+                    })
+                }
             </motion.div>
 
         </div>
