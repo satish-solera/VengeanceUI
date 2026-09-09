@@ -22,6 +22,11 @@
       "description": "Run tests",
       "cache": true,
       "outputs": ["coverage/**"]
+    },
+    "generate-index": {
+      "description": "Generate component index",
+      "cache": true,
+      "outputs": ["src/**"]
     }
   },
   "globalDependencies": ["**/.env", "**/.env.local"],
