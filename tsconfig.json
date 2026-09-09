@@ -18,8 +18,14 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@vengeance-ui/ui/*": ["packages/ui/src/*"],
+      "@vengeance-ui/cli/*": ["packages/cli/src/*"],
+      "@vengeance-ui/mcp/*": ["packages/mcp/src/*"],
+      "@vengeance-ui/config/*": ["packages/config/*"],
+      "@vengeance-ui/lib/*": ["packages/lib/*"]
     }
   },
   "include": [
@@ -30,5 +36,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "packages", "VengenceUI", "codegrid-gooey-text-reveal"]
+  "exclude": ["node_modules", "dist"]
 }
