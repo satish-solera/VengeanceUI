@@ -17,7 +17,8 @@
     "start": "node ./dist/index.js",
     "smoke": "npm run build && node ./dist/smoke.js",
     "prepare-dev": "npm run build",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "lint": "eslint src --max-warnings 0"
   },
   "engines": {
     "node": ">=20.9.0"
